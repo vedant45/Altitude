@@ -3,14 +3,19 @@ import { getFirestore } from 'firebase/firestore'
 import { getAuth } from 'firebase/auth'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA0fBZGTpAY48nY_Uh_IL8C73cimMpavOk",
-  authDomain: "dineout-75043.firebaseapp.com",
-  projectId: "dineout-75043",
-  storageBucket: "dineout-75043.firebasestorage.app",
-  messagingSenderId: "221243143754",
-  appId: "1:221243143754:web:61a8b7ee803cbc049c18b3"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY!,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN!,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID!,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET!,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID!,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID!,
+}
+
+if (Object.values(firebaseConfig).some(v => !v)) {
+  throw new Error('Missing Firebase env vars. Check .env.local')
 }
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
+
 export const db = getFirestore(app)
 export const auth = getAuth(app)
